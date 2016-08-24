@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 import time
 import rfidiot
 import sys
@@ -70,7 +71,7 @@ def displayCardInfo():
 def selectCardByDFname(dfname):
     """select the virtual app by selecting the ISOfile VIID (DFname)"""
     selectDF = ["00", "A4", "04", "00", "%02d" % len(dfname)] + dfname +  ["00"]
-    isoselectresp = send(selectDF)
+    isoselectresp = send(selectDF, True)
     if isoselectresp != "9000":
         print("Error selecting app. Resp: %s" % isoselectresp)
 
@@ -162,22 +163,23 @@ def checkIfLocked():
         print("%s/!\ FAIL. The card have been soft locked.%s" % ("\033[91m", "\033[0m"))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":        
     bytevect = ["AA", "BB","CC", "DD", "EE", "FF", "00", "11"]
-    
+    nb_exchanges = 8
+
     waitForCardPresent()
     # displayCardInfo()
+    print("===\tSelect card\t===\n")
     selectCardByDFname(["02", "18", "06", "77", "77"])
 
-    print("===\tPrepare PC\t===\n")
+    print("\n===\tPrepare PC\t===\n")
     preparePC_data = preparePC()
 
     print("\n===\tProximity Check\t===\n")
-    nb_exchange = 1
-    proximity_check_data = proximityCheck(nb_exchange, bytevect)
+    proximity_check_data = proximityCheck(nb_exchanges, bytevect)
         
     print("\n===\tVerify PC\t===\n")
-    verifyPC(proximity_check_data, bytevect, preparePC_data, nb_exchange)
+    verifyPC(proximity_check_data, bytevect, preparePC_data, nb_exchanges)
 
     print("\n===\tCheck locked\t===\n")
     checkIfLocked()

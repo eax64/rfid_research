@@ -8,11 +8,6 @@ import matplotlib.pyplot as plt
 import argparse
 import itertools
 from scipy import signal
-import scipy.ndimage as im
-
-# from galry import *
-#from numpy.random import randn
-
 
 def remove_lower_half(x):
     if x < 0:
@@ -23,43 +18,49 @@ if __name__ == "__main__":
 
 
     plt.rcParams['agg.path.chunksize'] = 10000
-    # print(plt.rcParams)
-    # exit()
     
     parser = argparse.ArgumentParser()
     parser.add_argument('FILE', help='File to process')
+    parser.add_argument('--quick', action="store_true", help='Draft image')
     args = parser.parse_args()
 
     data = numpy.load(args.FILE)
-    print("loaded")
+    print("Numpy file loaded")
 
-    # fd = open("data_raw_float",'wb')
-    # fd.write(data.astype('float32').tobytes())
-    # fd.close()
+    deci = 3
+    data = signal.decimate(data, deci)
+    data_size = len(data)
 
-    data = signal.decimate(data, 4)
+    #Center to 0
     avg = numpy.average(data)
     data = data - avg
-    
 
-    # avg = numpy.average(data)
-    # print(avg, rms, max(data), min(data))
-
-    # data = im.median_filter(data, 1)
-    print("halfing")
+    print("Halfing signal")
     vfunc = numpy.vectorize(remove_lower_half)
     data = vfunc(data)
 
-    print("rms")
-    rms = numpy.linalg.norm(data)/numpy.sqrt(len(data))
+    #Convert to a readable unit
+    data = data * 10*1.057031e-01/255*100
 
-    print("max")
-    mx = max(data)
-    print(rms, min(data), mx)
+    print("Drawing image")
+    figsize=(20,5)
+    if not args.quick:
+        figsize=(30,5)
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot(111)
 
-    print("fig")
-    plt.figure(figsize=(20,6), dpi=10)
-    print("y")
-    plt.ylim((rms*2, mx))
-    plt.plot(data)
-    plt.savefig('out.png')
+
+    dpi = 50
+    if not args.quick:
+        dpi = 200    
+        ax.set_xlabel('time (ms)')
+        ax.set_ylabel('voltage (V)')
+        ax.set_xlim(0, 200)
+        ax.set_xticks(numpy.arange(0, 200, 1))
+        ax.set_xticklabels(numpy.arange(0, 200, 1), rotation=45, fontsize=7)
+        ax.grid()
+
+
+    ax.plot(numpy.linspace(0, 192, num=data_size), data)
+
+    plt.savefig('out.png', bbox_inches='tight', dpi=dpi)

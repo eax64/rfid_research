@@ -22,10 +22,6 @@ class RigolScope:
     def __init__(self, device):
         self.meas = usbtmc(device)
  
-        self.name = self.meas.getName()
- 
-        print(self.name)
- 
     def write(self, command):
         """Send an arbitrary command directly to the scope"""
         self.meas.write(bytes(command, "utf8"))
