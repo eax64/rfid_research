@@ -4,22 +4,22 @@ The corpus contain:
 - Explanation of the project
 - Source code
 - Pictures of the setup
-- My bibliograpy as a .bib file
+- My bibliography as a .bib file
 - Youtube videos with demo of the setup
 
 ## Context
 
-This project is about analysing the vulnerabilities of commercialy available RFID tags and to identify potential contermeasure.
-This corpus focus principaly on the MIFARE DESfire EV2 card and on the distance bouding implemented on it.
+This project is about analysing the vulnerabilities of commercially available RFID tags and to identify potential contermeasure.
+This corpus focus principally on the MIFARE DESfire EV2 card and on the distance bounding implemented on it.
 
 Two attacks have been implemented:
-- Eavesdroping of the RF
+- Eavesdropping of the RF
 This have been done using a SDR device (BladeRF + xb200 downconvertor)
-Data had been recovered from around 50cm, althaugh no demonstration of it will be shown in this corpus.
+Data had been recovered from around 50cm, although no demonstration of it will be shown in this corpus.
 - Relay attack (mafia fraud)
 Using 2 suplementary readers to have a tag emulator and a rogue reader
 
-Samples of communication have been acquired from an oscilloscope. The goal was to detect if there was timming difference in some situation.
+Samples of communication have been acquired from an oscilloscope. The goal was to detect if there was timing difference in some situation.
 4 test have been done with 150 samples for each test:
 - ok_1x8
 Using a valid key, check the proximity of the card by sending 1 ProximityCheck command of 8 bytes.
@@ -30,12 +30,35 @@ Using an invalid key, check the proximity of the card by sending 1 ProximityChec
 - wrong_8x1
 Using an invalid key, check the proximity of the card by sending 8 ProximityCheck command of 1 byte.
 
-Exact timming average/mean/standart deviation of all of the sample will maybe be calculated for the final dissertation. For now only a manual checking on only 3 samples for each test have been done using oscilloscope cursors. (cf [timing.txt](misc/timing.txt))
+Exact timing average/mean/standard deviation of all of the sample will maybe be calculated for the final dissertation. For now only a manual checking on only 3 samples for each test have been done using oscilloscope cursors. (cf [timing.txt](misc/timing.txt))
 
-## Usage
+## Example usage
+
+EV2 proximity check script
+```
+python2 ./ev2.py -f 0
+```
+
+Data acquisition
+```
+./scope.py --repeat 1 --time 290 --dest ./test/ --cmd "python2 ../ev2_communication/ev2.py -f 0"
+```
 
 Generation of sample graph:
+```
 ./process.py --decimation=1 --out process_ok_1x8_0.png --ranges "0:190 88.12:88.21 89.75:89.84" output/ok_1x8/0.npy
+```
+
+Running the tag emulator program
+```
+./emulator ./target_info
+```
+
+Running the rogue reader script
+```
+python2 ./fake_reader.py -r 1
+```
+
 
 ## sources
 ##### eavesdrop_ISO14443A/
@@ -86,7 +109,7 @@ Python script that automate the acquisition of data from the oscilloscope.
 
 ###### output/
 [checksum_md5.txt](sources/scope_instrumentation/output/checksum_md5.txt)
-Md5 of every files in this directory. (Not present on github because too big) 
+Md5 of every file in this directory. (Not present on github because too big) 
 
 ## misc
 [rfid.bib](misc/rfid.bib)
@@ -126,5 +149,5 @@ Early timing result of data sample.
 [Data from the oscilloscope acquisition (*)](http://www.eax.ovh/rfid/output/)
 
 \(*) As it takes a lot of time to send all of this data (14Go) to my server, it won't be all sent by the deadline.
-However, all of the files checksums are present on the [checksum_md5.txt](sources/scope_instrumentation/output/checksum_md5.txt) and allow me to proof that the files have been generated before the deadline.
-All of these files are also present on the hard drive I handed in. This mostly act as a backup solution if there is a problem with the hard drive.
+However, all of the files checksums are present on the [checksum_md5.txt](sources/scope_instrumentation/output/checksum_md5.txt) and allow me to prove that the files have been generated before the deadline.
+All of these files are also present on the hard drive I handed in (on the `kent_corpus_data` directory). This mostly act as a backup solution if there is a problem with the hard drive.
