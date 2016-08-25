@@ -1,5 +1,42 @@
 # Rfid research corpus
 
+The corpus contain:
+- Explanation of the project
+- Source code
+- Pictures of the setup
+- My bibliograpy as a .bib file
+- Youtube videos with demo of the setup
+
+## Context
+
+This project is about analysing the vulnerabilities of commercialy available RFID tags and to identify potential contermeasure.
+This corpus focus principaly on the MIFARE DESfire EV2 card and on the distance bouding implemented on it.
+
+Two attacks have been implemented:
+- Eavesdroping of the RF
+This have been done using a SDR device (BladeRF + xb200 downconvertor)
+Data had been recovered from around 50cm, althaugh no demonstration of it will be shown in this corpus.
+- Relay attack (mafia fraud)
+Using 2 suplementary readers to have a tag emulator and a rogue reader
+
+Samples of communication have been acquired from an oscilloscope. The goal was to detect if there was timming difference in some situation.
+4 test have been done with 150 samples for each test:
+- ok_1x8
+Using a valid key, check the proximity of the card by sending 1 ProximityCheck command of 8 bytes.
+- ok_8x1
+Using a valid key, check the proximity of the card by sending 8 ProximityCheck command of 1 byte.
+- wrong_1x8
+Using an invalid key, check the proximity of the card by sending 1 ProximityCheck command of 8 bytes.
+- wrong_8x1
+Using an invalid key, check the proximity of the card by sending 8 ProximityCheck command of 1 byte.
+
+Exact timming average/mean/standart deviation of all of the sample will maybe be calculated for the final dissertation. For now only a manual checking on only 3 samples for each test have been done using oscilloscope cursors. (cf [timing.txt](misc/timing.txt))
+
+## Usage
+
+Generation of sample graph:
+./process.py --decimation=1 --out process_ok_1x8_0.png --ranges "0:190 88.12:88.21 89.75:89.84" output/ok_1x8/0.npy
+
 ## sources
 ##### eavesdrop_ISO14443A/
 [eavesdrop.grc](sources/eavesdrop_ISO14443A/eavesdrop.grc)
@@ -55,16 +92,39 @@ Md5 of every files in this directory. (Not present on github because too big)
 [rfid.bib](misc/rfid.bib)
 Bibliography for this research
 
+[timing.txt](misc/timing.txt)
+Early timing result of data sample.
+
 ## pictures
 [3_readers_plus_card.jpg](pictures/3_readers_plus_card.jpg)
+
 [coil_1.jpg](pictures/coil_1.jpg)
+
 [coil_2.jpg](pictures/coil_2.jpg)
+
 [coil_between_reader_and_card.jpg](pictures/coil_between_reader_and_card.jpg)
+
 [coil_on_reader.jpg](pictures/coil_on_reader.jpg)
+
 [relay_attack.jpg](pictures/relay_attack.jpg)
+
 [scope_result.jpg](pictures/scope_result.jpg)
+
+[process_ok_1x8_0.png](pictures/process_ok_1x8_0.png)
+
+[gnuradio.png](pictures/gnuradio.png)
+
+[sdr_device.jpg](pictures/sdr_device.jpg)
 
 ## external (not on this git)
 [relay attack demo](https://youtu.be/xrbX1eyYmmM)
+
 [video of the screen while doing the relay attack](https://youtu.be/zv1wj6LL6Sk)
+
 [scope data acquisition](https://youtu.be/v0CtLfY0V7U)
+
+[Data from the oscilloscope acquisition (*)](http://www.eax.ovh/rfid/output/)
+
+\(*) As it takes a lot of time to send all of this data (14Go) to my server, it won't be all sent by the deadline.
+However, all of the files checksums are present on the [checksum_md5.txt](sources/scope_instrumentation/output/checksum_md5.txt) and allow me to proof that the files have been generated before the deadline.
+All of these files are also present on the hard drive I handed in. This mostly act as a backup solution if there is a problem with the hard drive.

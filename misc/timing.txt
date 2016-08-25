@@ -1,0 +1,38 @@
+1 x 8 bytes 
+
+[Check VIID] [Select DF] [Prepare PC] [PC] [VerifyPC] [Check if locked]
+
+Proximity check:
+1.636ms
+1.636ms
+1.636ms
+
+VerifyPC: (GOOD key)
+5.050ms
+5.050ms
+5.050ms
+
+VerifyPC: (WRONG key)
+5.000ms
+5.000ms
+5.000ms
+
+8 x 1 byte
+
+[Check VIID] [Select DF] [Prepare PC] [PC] [PC] [PC] [PC] [PC] [PC] [PC] [PC] [VerifyPC] [Check if locked]
+
+Proximity check:
+1.680ms
+1.680ms
+1.680ms
+
+VerifyPC: (GOOD key)
+5.050ms
+5.050ms
+5.050ms
+
+VerifyPC: (WRONG eky)
+4.990ms
+4.990ms
+4.990ms
+
