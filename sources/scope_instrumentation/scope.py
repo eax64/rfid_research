@@ -89,12 +89,13 @@ if __name__ == "__main__":
     parser.add_argument('--dest', required=True, help='Destination directory for samples')
     parser.add_argument('--cmd', required=True, help='Command to run that will trigger the scope')
     parser.add_argument('--time', help='Timeoffset')
+    parser.add_argument('--repeat', default=150, type=int, help='Number of repeat')
     args = parser.parse_args()
 
     if args.time:
         timeoffset = float(args.time) * 1e-03
     
-    for nb in range(150):
+    for nb in range(args.repeat):
         try:
             print("Sample nb: %d" % nb)
             print("setup")

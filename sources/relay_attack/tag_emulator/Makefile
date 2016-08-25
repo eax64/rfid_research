@@ -3,21 +3,30 @@ RM	= rm -f
 CFLAGS	= -Wextra -Wall
 LDFLAGS	= -lnfc
 
-SRC	= emulate.c
-OBJ	= $(SRC:.c=.o)
+SRC1	= emulate.c
+OBJ1	= $(SRC1:.c=.o)
 
-NAME	= emulate
+SRC2	= getinfo.c
+OBJ2	= $(SRC2:.c=.o)
 
-all: $(NAME)
+NAME1	= emulate
+NAME2	= getinfo
 
-$(NAME): $(OBJ)
-	$(CC) $(LDFLAGS) -o $(NAME) $(OBJ)
+all: $(NAME1) $(NAME2)
+
+$(NAME1): $(OBJ1)
+	$(CC) $(LDFLAGS) -o $(NAME1) $(OBJ1)
+
+$(NAME2): $(OBJ2)
+	$(CC) $(LDFLAGS) -o $(NAME2) $(OBJ2)
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJ1)
+	$(RM) $(OBJ2)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME1)
+	$(RM) $(NAME2)
 
 re: fclean all
 

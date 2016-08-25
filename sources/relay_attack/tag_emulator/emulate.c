@@ -46,27 +46,11 @@ int	main(int ac, char **av)
   nfc_context   *ctx;
   nfc_device    *pnd;
 
-  nfc_target nt = {
-    .nm = {
-      .nmt = NMT_ISO14443A,
-      .nbr = NBR_UNDEFINED,
-    },
-    .nti = {
-      .nai = {
-        .abtAtqa = { 0x00, 0x04 },
-        .abtUid = { 0x08, 0xab, 0xcd, 0xef },
-        .btSak = 0x09,
-        .szUidLen = 4,
-        .szAtsLen = 0,
-      },
-    },
-  };
-
-
-  
+  nfc_target nt;
+    
   if (ac != 2)
     {
-      printf("Usage: %s input_file\n", *av);
+      printf("Usage: %s input target\n", *av);
       return (0);
     }
 
